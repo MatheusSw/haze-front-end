@@ -6,4 +6,8 @@
   html {
     font-family: "Montserrat";
   }
+
+  body {
+    background-color: #f8f9fd;
+  }
 }

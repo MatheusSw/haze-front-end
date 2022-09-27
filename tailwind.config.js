@@ -11,7 +11,8 @@ module.exports = {
         "gold-brown":"#FFB129",
         "tifanny-blue": "#17BEBB",
         "raisin-black": "#2E282A",
-        "green-ryb": "#76B041"
+        "green-ryb": "#76B041",
+        "ghost-white": "#F8F9FD"
       }
     },
   },
