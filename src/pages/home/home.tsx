@@ -1,8 +1,10 @@
 import React from "react";
-import { useQuery } from "react-query";
+import { useQueries, useQuery } from "react-query";
 import ClusterCard from "../../components/cluster-card/clustercard";
 import { Cluster } from "../../types/responses/clusters";
 import { ReactComponent as LoadingIcon } from "../../icons/loading.svg";
+import MonitoringCard from "../../components/monitoring-card/monitoringcard";
+import { Measurement } from "../../types/responses/measurement";
 
 const Home: React.FC = () => {
   const {
@@ -20,6 +22,23 @@ const Home: React.FC = () => {
     }
   );
 
+  const measurementsQueries = useQueries(
+    clusterData?.map((cluster) => {
+      return {
+        queryKey: [`measurement-${cluster.id}`],
+        queryFn: async () => {
+          var response = await fetch(
+            `${process.env.REACT_APP_APIGATEWAY_URL}/clusters/${cluster.id}/measurements`
+          );
+          var measurement: Measurement[] = await response.json();
+          return measurement;
+        },
+        refetchOnWindowFocus: false,
+        retry: false,
+      };
+    }) ?? []
+  );
+
   return (
     <>
       {/*Add search bar*/}
@@ -31,7 +50,7 @@ const Home: React.FC = () => {
           What are you doing today?
         </span>
       </div>
-      <div className="grid grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
         <div className="col-span-4 flex flex-col gap-4" aria-colspan={4}>
           <span className="text-lg font-semibold text-gray-700">Clusters</span>
           {clusterIsLoading ? (
@@ -40,12 +59,11 @@ const Home: React.FC = () => {
               <LoadingIcon className="w-4 animate-spin fill-black" />
             </div>
           ) : (
-            <div className="flex gap-10">
+            <div className="flex flex-wrap gap-10">
               {clusterData?.map((cluster) => {
-                console.log(cluster);
                 return (
                   <ClusterCard
-                    clusterId={cluster.id.split("cluster-")[1].slice(0, 8)}
+                    clusterId={cluster.id.slice(0, 8)}
                     clusterLastWatered="1d"
                     clusterName={cluster.location}
                     clusterPlantsCount={4}
@@ -57,10 +75,31 @@ const Home: React.FC = () => {
             </div>
           )}
         </div>
-        <div className="col-span-1" aria-colspan={1}>
+        <div className="col-span-1 flex flex-col gap-4" aria-colspan={1}>
           <span className="text-lg font-semibold text-gray-700">
             Monitoring
           </span>
+          <div className="flex gap-10">
+            {measurementsQueries
+              .filter((query) => query.isSuccess && query.data)
+              .map((measurement) => {
+                return (
+                  <MonitoringCard
+                    key={measurement.data![0].id}
+                    humidity={(+measurement.data!.find(
+                      (m) => m.type === "humidity"
+                    )!.reading).toFixed(2)}
+                    temperature={(+measurement.data!.find(
+                      (m) => m.type === "temperature"
+                    )!.reading).toFixed(2)}
+                    heading={
+                      clusterData?.find((c) => c.id === measurement.data![0].id)
+                        ?.name!
+                    }
+                  />
+                );
+              })}
+          </div>
         </div>
       </div>
     </>

@@ -8,7 +8,7 @@ import NavGroup from "../nav-group/navgroup";
 
 const Sidebar: React.FC = () => {
   return (
-    <div className="m-6 flex flex-col gap-24 rounded-3xl bg-white p-12">
+    <div className="flex flex-col gap-24 bg-white p-12">
       <div className="col-span-1 flex items-center gap-2" aria-colspan={1}>
         <Logo className="mr-4 w-10" />
         <span className="text-2xl font-bold text-gray-800">Haze</span>

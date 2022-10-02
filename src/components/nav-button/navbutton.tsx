@@ -10,12 +10,14 @@ const NavButton: React.FC<NavButtonProps> = ({ iconSrc, to, text }) => {
   return (
     <NavLink
       to={to}
-      className="flex items-center rounded-full py-3 px-4 transition-colors duration-300 text-md"
+      className="text-md flex items-center rounded-full py-3 transition-colors duration-300"
     >
-      <div className="flex flex-row flex-shrink-0 items-center">
-        <img src={iconSrc} alt="Menu item icon" className="w-5 h-5" />
+      <div className="flex flex-shrink-0 flex-row items-center">
+        <img src={iconSrc} alt="Menu item icon" className="h-5 w-5" />
         {text && (
-          <span className="ml-4 text-gray-800 hover:text-haze-green hover:font-semibold transition-all duration-200">{text}</span>
+          <span className="ml-4 text-gray-800 transition-all duration-200 hover:font-semibold hover:text-haze-green">
+            {text}
+          </span>
         )}
       </div>
     </NavLink>

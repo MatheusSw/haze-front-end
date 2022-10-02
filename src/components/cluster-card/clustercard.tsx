@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { ReactComponent as WaterDropsIcon } from "../../icons/water-drops.svg";
 import { ReactComponent as PlantIcon } from "../../icons/plant.svg";
 import { PlantStage } from "../../types/enums/PlantStage";
+import { CardsBackgroundColors } from "../../types/cards-colors";
 
 interface ClusterCardProps {
   clusterId: string;
@@ -10,14 +11,6 @@ interface ClusterCardProps {
   clusterLastWatered: string;
   clusterPlantsCount: number;
 }
-
-const cardBackgroundColors: string[] = [
-  "bg-magenta",
-  "bg-gold-brown",
-  "bg-tifanny-blue",
-  "bg-raisin-black",
-  "bg-green-ryb",
-];
 
 const ClusterCard: React.FC<ClusterCardProps> = ({
   clusterId,
@@ -28,13 +21,9 @@ const ClusterCard: React.FC<ClusterCardProps> = ({
 }) => {
   return (
     <div
-      className={`flex w-52 flex-grow-0 flex-col justify-between gap-16 rounded-2xl ${
-        cardBackgroundColors[
-          Math.floor(Math.random() * cardBackgroundColors.length)
-        ]
-      } px-6 py-6`}
+      className={`flex w-52 flex-grow-0 flex-col justify-between gap-16 rounded-2xl bg-black px-6 py-6 text-white`}
     >
-      <div className="flex flex-col break-words text-white">
+      <div className="flex flex-col break-words">
         <span className="text-md font-medium">#{clusterId}</span>
         <span className="max-h-24 overflow-hidden text-2xl font-bold">
           {clusterName}
@@ -45,7 +34,7 @@ const ClusterCard: React.FC<ClusterCardProps> = ({
           </span>
         )}
       </div>
-      <div className="flex flex-row gap-10 text-lg font-medium text-white">
+      <div className="flex flex-row gap-10 text-lg font-medium">
         <div className="flex items-center gap-2">
           <WaterDropsIcon className="h-6 w-6 fill-white" />
           <span>{clusterLastWatered}</span>
