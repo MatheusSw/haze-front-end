@@ -3,6 +3,7 @@ import HouseIcon from "../../icons/house.svg";
 import PlantIcon from "../../icons/plant.svg";
 import LifelineIcon from "../../icons/pulse.svg";
 import NavButton from "../nav-button/navbutton";
+import ProfileCard from "../profile-card/profilecard";
 
 const Sidebar: React.FC = () => {
   return (
@@ -11,6 +12,12 @@ const Sidebar: React.FC = () => {
         <Logo className="mr-4 w-10" />
         <span className="text-2xl font-bold text-gray-800">Haze</span>
       </div>
+      {/*TODO actually use this when users get implemented*/}
+      <ProfileCard
+        name="Matheus"
+        title="Boss"
+        photo="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/seth-rogen-attends-los-angeles-fyc-clips-conversation-event-news-photo-1655133456.jpg"
+      />
       <div className="flex flex-col gap-10">
         <NavButton iconSrc={HouseIcon} to="/" text="Home" />
         <NavButton iconSrc={PlantIcon} to="/clusters" text="Clusters" />
