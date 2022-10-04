@@ -3,7 +3,9 @@ import { useQueries, useQuery } from "react-query";
 import ClusterCard from "../../components/cluster-card/clustercard";
 import { Cluster } from "../../types/responses/clusters";
 import { ReactComponent as LoadingIcon } from "../../icons/loading.svg";
-import MonitoringCard from "../../components/monitoring-card/monitoringcard";
+import { ReactComponent as AlertIcon } from "../../icons/alert.svg";
+import { ReactComponent as PlantIcon } from "../../icons/plant.svg";
+import { ReactComponent as GreenhouseIcon } from "../../icons/networking.svg";
 import { Measurement } from "../../types/responses/measurement";
 
 const Home: React.FC = () => {
@@ -22,35 +24,69 @@ const Home: React.FC = () => {
     }
   );
 
-  const measurementsQueries = useQueries(
-    clusterData?.map((cluster) => {
-      return {
-        queryKey: [`measurement-${cluster.id}`],
-        queryFn: async () => {
-          var response = await fetch(
-            `${process.env.REACT_APP_APIGATEWAY_URL}/clusters/${cluster.id}/measurements`
-          );
-          var measurement: Measurement[] = await response.json();
-          return measurement;
-        },
-        refetchOnWindowFocus: false,
-        retry: false,
-      };
-    }) ?? []
-  );
+  //const measurementsQueries = useQueries(
+  //  clusterData?.map((cluster) => {
+  //    return {
+  //      queryKey: [`measurement-${cluster.id}`],
+  //      queryFn: async () => {
+  //        var response = await fetch(
+  //          `${process.env.REACT_APP_APIGATEWAY_URL}/clusters/${cluster.id}/measurements`
+  //        );
+  //        var measurement: Measurement[] = await response.json();
+  //        return measurement;
+  //      },
+  //      refetchOnWindowFocus: false,
+  //      retry: false,
+  //    };
+  //  }) ?? []
+  //);
 
   return (
-    <div className="mx-16 my-16 flex h-full flex-col gap-12 rounded-3xl bg-white py-16 px-14">
-      {/*Add search bar*/}
-      <div className="flex flex-col gap-2">
-        <span className="text-4xl font-bold text-gray-800">
-          Hey Joe, how are you?
-        </span>
-        <span className="text-md text-gray-400">What are you doing today?</span>
-        <hr className="mt-6"></hr>
+    <div className="mx-16 my-16 flex h-full flex-col rounded-3xl bg-white py-16 px-14">
+      <div className="mb-6 flex flex-col gap-10">
+        <div className="flex flex-col gap-2">
+          <span className="text-4xl font-bold text-gray-800">
+            Hey Joe, how are you?
+          </span>
+          <span className="text-md text-gray-400">
+            What are you doing today?
+          </span>
+        </div>
+        <div className="flex gap-32">
+          <div className="flex items-center gap-4">
+            <div className="flex-grow-0 rounded-md bg-gray-100 p-3">
+              <AlertIcon className="w-6 fill-red-500" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-lg font-semibold">0</span>
+              <span className="text-sm text-gray-400">clusters in alert</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex-grow-0 rounded-md bg-gray-100 p-3">
+              <GreenhouseIcon className="w-6 fill-green-ryb" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-lg font-semibold">
+                {clusterData?.length ?? 0}
+              </span>
+              <span className="text-sm text-gray-400">clusters</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex-grow-0 rounded-md bg-gray-100 p-3">
+              <PlantIcon className="w-6 fill-haze-green" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-lg font-semibold">12</span>
+              <span className="text-sm text-gray-400">plants</span>
+            </div>
+          </div>
+        </div>
+        <hr></hr>
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
-        <div className="col-span-4 flex flex-col gap-4" aria-colspan={4}>
+      <div className="gap-4">
+        <div className="flex flex-col gap-4">
           <span className="text-2xl font-bold">Clusters</span>
           {clusterIsLoading ? (
             <div className="flex items-center justify-center gap-4">
@@ -73,30 +109,6 @@ const Home: React.FC = () => {
               })}
             </div>
           )}
-        </div>
-        <div className="col-span-1 flex flex-col gap-4" aria-colspan={1}>
-          <span className="text-2xl font-bold"> Monitoring</span>
-          <div className="flex gap-10">
-            {measurementsQueries
-              .filter((query) => query.isSuccess && query.data)
-              .map((measurement) => {
-                return (
-                  <MonitoringCard
-                    key={measurement.data![0].id}
-                    humidity={(+measurement.data!.find(
-                      (m) => m.type === "humidity"
-                    )!.reading).toFixed(2)}
-                    temperature={(+measurement.data!.find(
-                      (m) => m.type === "temperature"
-                    )!.reading).toFixed(2)}
-                    heading={
-                      clusterData?.find((c) => c.id === measurement.data![0].id)
-                        ?.name!
-                    }
-                  />
-                );
-              })}
-          </div>
         </div>
       </div>
     </div>
