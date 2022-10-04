@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { ReactComponent as WaterDropsIcon } from "../../icons/water-drops.svg";
 import { ReactComponent as PlantIcon } from "../../icons/plant.svg";
-import { PlantStage } from "../../types/enums/PlantStage";
-import { CardsBackgroundColors } from "../../types/cards-colors";
+import { ReactComponent as HumidityIcon } from "../../icons/humidity.svg";
+import { ReactComponent as ThermometerIcon } from "../../icons/thermometer.svg";
 
 interface ClusterCardProps {
   clusterId: string;
@@ -10,6 +10,8 @@ interface ClusterCardProps {
   clusterStage: string | undefined;
   clusterLastWatered: string;
   clusterPlantsCount: number;
+  temperature?: string;
+  humidity?: string;
 }
 
 const ClusterCard: React.FC<ClusterCardProps> = ({
@@ -18,29 +20,49 @@ const ClusterCard: React.FC<ClusterCardProps> = ({
   clusterName,
   clusterPlantsCount,
   clusterStage,
+  humidity,
+  temperature,
 }) => {
   return (
     <div
       className={`flex w-52 flex-grow-0 flex-col justify-between gap-16 rounded-2xl border px-6 py-6`}
     >
       <div className="flex flex-col break-words">
-        <span className="text-md font-medium">#{clusterId}</span>
+        <span className="text-sm font-medium text-gray-300">#{clusterId}</span>
         <span className="max-h-24 overflow-hidden text-2xl font-bold">
           {clusterName}
         </span>
         {clusterStage && (
-          <span className="text-md font-medium">
+          <span className="text-sm font-medium">
             {clusterStage.charAt(0).toUpperCase() + clusterStage.slice(1)}
           </span>
         )}
       </div>
-      <div className="flex flex-row gap-10 text-lg font-medium">
+      {(!humidity || !temperature) && (
+        <div className="rounded-2xl bg-red-500 p-2 text-xs text-white">
+          No measurements found
+        </div>
+      )}
+
+      <div className="grid grid-cols-2 gap-4">
+        {humidity && (
+          <div className="flex items-center gap-2">
+            <HumidityIcon className="w-5" />
+            <span>{humidity}%</span>
+          </div>
+        )}
+        {temperature && (
+          <div className="flex items-center gap-2">
+            <ThermometerIcon className="w-5" />
+            <span>23°C</span>
+          </div>
+        )}
         <div className="flex items-center gap-2">
-          <WaterDropsIcon className="h-6 w-6" />
+          <WaterDropsIcon className="w-5" />
           <span>{clusterLastWatered}</span>
         </div>
         <div className="flex items-center gap-2">
-          <PlantIcon className="h-6 w-6" />
+          <PlantIcon className="w-5" />
           <span>{clusterPlantsCount}</span>
         </div>
       </div>

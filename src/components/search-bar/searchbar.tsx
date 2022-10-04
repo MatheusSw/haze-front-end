@@ -9,7 +9,7 @@ const SearchBar: React.FC = () => {
         name="searchInput"
         id="searchInput"
         className="w-full bg-white/0 p-2 outline-haze-green"
-        placeholder="What are you looking for today?"
+        placeholder="What are you looking for?"
         aria-label="Search input"
       />
     </div>

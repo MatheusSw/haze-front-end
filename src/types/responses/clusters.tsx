@@ -1,4 +1,5 @@
 import { PlantStage } from "../enums/PlantStage";
+import { Measurement } from "./measurement";
 
 export type Cluster = {
   id: string;
@@ -7,4 +8,5 @@ export type Cluster = {
   name: string;
   state?: string | undefined;
   updated_at: string;
+  measurements: Measurement[];
 };

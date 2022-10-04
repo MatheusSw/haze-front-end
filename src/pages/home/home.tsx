@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQueries, useQuery } from "react-query";
 import ClusterCard from "../../components/cluster-card/clustercard";
 import { Cluster } from "../../types/responses/clusters";
@@ -16,30 +16,39 @@ const Home: React.FC = () => {
   } = useQuery<Cluster[]>(
     ["clusters"],
     async () => {
-      const res = await fetch(process.env.REACT_APP_CLUSTERS_INDEX_URL!);
-      return await res.json();
+      const response = await fetch(process.env.REACT_APP_CLUSTERS_INDEX_URL!);
+      return await response.json();
     },
     {
       refetchOnWindowFocus: false,
     }
   );
 
-  //const measurementsQueries = useQueries(
-  //  clusterData?.map((cluster) => {
-  //    return {
-  //      queryKey: [`measurement-${cluster.id}`],
-  //      queryFn: async () => {
-  //        var response = await fetch(
-  //          `${process.env.REACT_APP_APIGATEWAY_URL}/clusters/${cluster.id}/measurements`
-  //        );
-  //        var measurement: Measurement[] = await response.json();
-  //        return measurement;
-  //      },
-  //      refetchOnWindowFocus: false,
-  //      retry: false,
-  //    };
-  //  }) ?? []
-  //);
+  const measurementsQueries = useQueries(
+    clusterData?.map((cluster) => {
+      return {
+        queryKey: [`measurement-${cluster.id}`],
+        queryFn: async () => {
+          var response = await fetch(
+            `${process.env.REACT_APP_APIGATEWAY_URL}/clusters/${cluster.id}/measurements`
+          );
+          var measurement: Measurement[] = await response.json();
+          return measurement;
+        },
+        refetchOnWindowFocus: false,
+        retry: false,
+        onSuccess(data: Measurement[]) {
+          const cluster = clusterData.find(
+            (cluster) => cluster.id === data[0].id
+          );
+          if (!cluster) {
+            return;
+          }
+          cluster!.measurements = data;
+        },
+      };
+    }) ?? []
+  );
 
   return (
     <div className="flex flex-col rounded-3xl bg-white px-14 py-16">
@@ -88,7 +97,9 @@ const Home: React.FC = () => {
       <div className="gap-4">
         <div className="flex flex-col gap-4">
           <span className="text-2xl font-bold">Clusters</span>
-          {clusterIsLoading ? (
+          {clusterIsLoading ||
+          measurementsQueries.length === 0 ||
+          measurementsQueries.filter((query) => query.isLoading).length > 0 ? (
             <div className="flex items-center justify-center gap-4">
               <span className="font-bold">Loading</span>
               <LoadingIcon className="w-4 animate-spin fill-black" />
@@ -102,6 +113,12 @@ const Home: React.FC = () => {
                     clusterLastWatered="1d"
                     clusterName={cluster.location}
                     clusterPlantsCount={4}
+                    humidity={cluster.measurements
+                      ?.find((m) => m.type === "humidity")
+                      ?.reading.toFixed(0)}
+                    temperature={cluster.measurements
+                      ?.find((m) => m.type === "temperature")
+                      ?.reading.toFixed(0)}
                     clusterStage={cluster.state}
                     key={cluster.id}
                   />
