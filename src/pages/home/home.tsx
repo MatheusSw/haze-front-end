@@ -42,7 +42,7 @@ const Home: React.FC = () => {
   //);
 
   return (
-    <div className="mx-16 my-16 flex h-full flex-col rounded-3xl bg-white py-16 px-14">
+    <div className="flex flex-col rounded-3xl bg-white px-14 py-16">
       <div className="mb-6 flex flex-col gap-10">
         <div className="flex flex-col gap-2">
           <span className="text-4xl font-bold text-gray-800">

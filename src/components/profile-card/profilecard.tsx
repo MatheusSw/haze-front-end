@@ -6,12 +6,12 @@ interface ProfileCardProps {
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ name, title, photo }) => {
   return (
-    <div className="flex gap-3">
-      <div className="flex items-center">
+    <div className="flex items-center gap-x-3">
+      <div className="h-14 w-14 overflow-hidden rounded-full">
         <img
           src={photo}
           alt="Your profile"
-          className="h-14 w-14 rounded-full"
+          className="h-full w-full object-cover"
         />
       </div>
       <div className="flex flex-col">

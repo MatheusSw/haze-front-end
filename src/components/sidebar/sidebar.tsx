@@ -13,12 +13,7 @@ const Sidebar: React.FC = () => {
         <span className="text-2xl font-bold text-gray-800">Haze</span>
       </div>
       {/*TODO actually use this when users get implemented*/}
-      <ProfileCard
-        name="Matheus"
-        title="Boss"
-        photo="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/seth-rogen-attends-los-angeles-fyc-clips-conversation-event-news-photo-1655133456.jpg"
-      />
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-6">
         <NavButton iconSrc={HouseIcon} to="/" text="Home" />
         <NavButton iconSrc={PlantIcon} to="/clusters" text="Clusters" />
         <NavButton iconSrc={LifelineIcon} to="/monitoring" text="Monitoring" />
