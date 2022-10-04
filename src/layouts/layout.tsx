@@ -9,13 +9,13 @@ const Layout: React.FC = () => {
     <div className="grid min-h-screen w-full grid-cols-6 subpixel-antialiased">
       <Sidebar />
       <main className="col-span-5" aria-colspan={5}>
-        <div className="my-16 mx-16 flex h-full flex-col gap-6">
+        <div className="my-16 mx-16 flex flex-col gap-6">
           <div className="flex justify-between gap-10">
             <SearchBar />
             <ProfileCard
               name="Matheus"
               title="Boss"
-              photo="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/seth-rogen-attends-los-angeles-fyc-clips-conversation-event-news-photo-1655133456.jpg"
+              photo="https://images.unsplash.com/photo-1498671546682-94a232c26d17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=749&q=80"
             />
           </div>
           <Outlet />
