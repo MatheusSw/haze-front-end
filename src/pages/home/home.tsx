@@ -40,7 +40,7 @@ const Home: React.FC = () => {
   );
 
   return (
-    <div className="mx-16 my-16 flex h-full flex-col gap-20 rounded-3xl bg-white py-16 px-14">
+    <div className="mx-16 my-16 flex h-full flex-col gap-12 rounded-3xl bg-white py-16 px-14">
       {/*Add search bar*/}
       <div className="flex flex-col gap-2">
         <span className="text-4xl font-bold text-gray-800">

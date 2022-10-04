@@ -21,7 +21,7 @@ const ClusterCard: React.FC<ClusterCardProps> = ({
 }) => {
   return (
     <div
-      className={`flex w-52 flex-grow-0 flex-col justify-between gap-16 rounded-2xl border-black/5 bg-black/5 px-6 py-6`}
+      className={`flex w-52 flex-grow-0 flex-col justify-between gap-16 rounded-2xl border px-6 py-6`}
     >
       <div className="flex flex-col break-words">
         <span className="text-md font-medium">#{clusterId}</span>
