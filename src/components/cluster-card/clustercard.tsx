@@ -21,7 +21,7 @@ const ClusterCard: React.FC<ClusterCardProps> = ({
 }) => {
   return (
     <div
-      className={`flex w-52 flex-grow-0 flex-col justify-between gap-16 rounded-2xl bg-black px-6 py-6 text-white`}
+      className={`flex w-52 flex-grow-0 flex-col justify-between gap-16 rounded-2xl border-black/5 bg-black/5 px-6 py-6`}
     >
       <div className="flex flex-col break-words">
         <span className="text-md font-medium">#{clusterId}</span>
@@ -36,11 +36,11 @@ const ClusterCard: React.FC<ClusterCardProps> = ({
       </div>
       <div className="flex flex-row gap-10 text-lg font-medium">
         <div className="flex items-center gap-2">
-          <WaterDropsIcon className="h-6 w-6 fill-white" />
+          <WaterDropsIcon className="h-6 w-6" />
           <span>{clusterLastWatered}</span>
         </div>
         <div className="flex items-center gap-2">
-          <PlantIcon className="h-6 w-6 fill-white" />
+          <PlantIcon className="h-6 w-6" />
           <span>{clusterPlantsCount}</span>
         </div>
       </div>

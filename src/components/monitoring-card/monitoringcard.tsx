@@ -14,17 +14,15 @@ const MonitoringCard: React.FC<MonitoringCardProps> = ({
   humidity,
 }) => {
   return (
-    <div
-      className={`flex gap-6 rounded-2xl bg-black px-6 py-3 text-lg text-white`}
-    >
+    <div className={`flex gap-6 rounded-2xl bg-black/5 px-6 py-3 text-lg`}>
       <span className="font-medium">{heading}</span>
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-1">
-          <ThermometerIcon className="w-6 fill-white" />
+          <ThermometerIcon className="w-6" />
           <span className="text-sm font-medium">{temperature}°</span>
         </div>
         <div className="flex items-center  gap-1">
-          <HumidityIcon className="w-6 fill-white" />
+          <HumidityIcon className="w-6" />
           <span className="text-sm font-medium">{humidity}%</span>
         </div>
       </div>

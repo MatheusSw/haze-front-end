@@ -40,19 +40,18 @@ const Home: React.FC = () => {
   );
 
   return (
-    <>
+    <div className="mx-16 my-16 flex h-full flex-col gap-20 rounded-3xl bg-white py-16 px-14">
       {/*Add search bar*/}
       <div className="flex flex-col gap-2">
         <span className="text-4xl font-bold text-gray-800">
           Hey Joe, how are you?
         </span>
-        <span className="text-md font-medium text-gray-700">
-          What are you doing today?
-        </span>
+        <span className="text-md text-gray-400">What are you doing today?</span>
+        <hr className="mt-6"></hr>
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
         <div className="col-span-4 flex flex-col gap-4" aria-colspan={4}>
-          <span className="text-lg font-semibold text-gray-700">Clusters</span>
+          <span className="text-2xl font-bold">Clusters</span>
           {clusterIsLoading ? (
             <div className="flex items-center justify-center gap-4">
               <span className="font-bold">Loading</span>
@@ -76,9 +75,7 @@ const Home: React.FC = () => {
           )}
         </div>
         <div className="col-span-1 flex flex-col gap-4" aria-colspan={1}>
-          <span className="text-lg font-semibold text-gray-700">
-            Monitoring
-          </span>
+          <span className="text-2xl font-bold"> Monitoring</span>
           <div className="flex gap-10">
             {measurementsQueries
               .filter((query) => query.isSuccess && query.data)
@@ -102,7 +99,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
