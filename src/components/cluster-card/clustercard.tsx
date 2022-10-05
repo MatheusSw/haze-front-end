@@ -38,32 +38,33 @@ const ClusterCard: React.FC<ClusterCardProps> = ({
           </span>
         )}
       </div>
-      {(!humidity || !temperature) && (
-        <div className="rounded-2xl bg-red-500 p-2 text-xs text-white">
-          No measurements found
-        </div>
-      )}
-
-      <div className="grid grid-cols-2 gap-4">
-        {humidity && (
-          <div className="flex items-center gap-2">
-            <HumidityIcon className="w-5" />
-            <span>{humidity}%</span>
+      <div className="flex flex-col gap-y-4">
+        {(!humidity || !temperature) && (
+          <div className="rounded-xl bg-red-500 p-2 text-xs text-white">
+            No measurements found
           </div>
         )}
-        {temperature && (
+        <div className="grid grid-cols-2 gap-4 ">
+          {humidity && (
+            <div className="flex items-center gap-2">
+              <HumidityIcon className="w-5" />
+              <span>{humidity}%</span>
+            </div>
+          )}
+          {temperature && (
+            <div className="flex items-center gap-2">
+              <ThermometerIcon className="w-5" />
+              <span>23°C</span>
+            </div>
+          )}
           <div className="flex items-center gap-2">
-            <ThermometerIcon className="w-5" />
-            <span>23°C</span>
+            <WaterDropsIcon className="w-5" />
+            <span>{clusterLastWatered}</span>
           </div>
-        )}
-        <div className="flex items-center gap-2">
-          <WaterDropsIcon className="w-5" />
-          <span>{clusterLastWatered}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <PlantIcon className="w-5" />
-          <span>{clusterPlantsCount}</span>
+          <div className="flex items-center gap-2">
+            <PlantIcon className="w-5" />
+            <span>{clusterPlantsCount}</span>
+          </div>
         </div>
       </div>
     </div>

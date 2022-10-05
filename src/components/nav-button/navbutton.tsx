@@ -11,8 +11,8 @@ const NavButton: React.FC<NavButtonProps> = ({ iconSrc, to, text }) => {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `text-md flex items-center px-4 py-3 font-semibold transition-colors duration-300 ${
-          isActive ? "w-full rounded-xl bg-white" : "rounded-full"
+        `text-md flex items-center px-4 py-3 font-semibold transition-colors duration-500 ${
+          isActive ? "w-full rounded-xl bg-white" : "rounded-xl hover:bg-white"
         }`
       }
     >
