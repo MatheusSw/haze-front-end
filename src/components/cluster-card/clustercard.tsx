@@ -40,7 +40,7 @@ const ClusterCard: React.FC<ClusterCardProps> = ({
       </div>
       <div className="flex flex-col gap-y-4">
         {(!humidity || !temperature) && (
-          <div className="rounded-xl bg-red-500 p-2 text-xs text-white">
+          <div className="col-span-2 rounded-xl bg-red-500 p-2 text-xs text-white">
             No measurements found
           </div>
         )}
