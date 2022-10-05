@@ -5,8 +5,10 @@ import ClusterCard from "../../components/cluster-card/clustercard";
 import { Measurement } from "../../types/responses/measurement";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/button/button";
+import clusterIndexQuery from "../../queries/clustersIndexQuery";
+import MeasurementIndexQuery from "../../queries/measurementsIndexQuery";
 
-const Clusters: React.FC = () => {
+const ClustersPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleCreateClusterButton = () => {
@@ -19,28 +21,16 @@ const Clusters: React.FC = () => {
     isLoading: clusterIsLoading,
     isError: clusterIsError,
     data: clusterData,
-  } = useQuery<Cluster[]>(
-    ["clusters"],
-    async () => {
-      const response = await fetch(process.env.REACT_APP_CLUSTERS_INDEX_URL!);
-      return await response.json();
-    },
-    {
-      refetchOnWindowFocus: false,
-    }
-  );
+  } = useQuery<Cluster[]>(["clusters"], clusterIndexQuery, {
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+  });
 
   const measurementsQueries = useQueries(
     clusterData?.map((cluster) => {
       return {
-        queryKey: [`measurement-${cluster.id}`],
-        queryFn: async () => {
-          var response = await fetch(
-            `${process.env.REACT_APP_APIGATEWAY_URL}/clusters/${cluster.id}/measurements`
-          );
-          var measurement: Measurement[] = await response.json();
-          return measurement;
-        },
+        queryKey: ["measurements", { cluster: cluster.id }],
+        queryFn: MeasurementIndexQuery(cluster.id),
         refetchOnWindowFocus: false,
         retry: false,
         onSuccess(data: Measurement[]) {
@@ -52,6 +42,7 @@ const Clusters: React.FC = () => {
           }
           cluster!.measurements = data;
         },
+        staleTime: 10000,
       };
     }) ?? []
   );
@@ -60,7 +51,7 @@ const Clusters: React.FC = () => {
     <div className="flex flex-col gap-y-6">
       <div>
         <Button
-          text="Create a new cluster"
+          text="Create new cluster"
           onClick={() => handleCreateClusterButton()}
         />
       </div>
@@ -98,4 +89,4 @@ const Clusters: React.FC = () => {
   );
 };
 
-export default Clusters;
+export default ClustersPage;

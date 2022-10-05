@@ -1,9 +1,9 @@
 import { ReactComponent as Logo } from "../../logo.svg";
 import HouseIcon from "../../icons/house.svg";
 import PlantIcon from "../../icons/plant.svg";
+import ClusterIcon from "../../icons/networking.svg";
 import LifelineIcon from "../../icons/pulse.svg";
 import NavButton from "../nav-button/navbutton";
-import ProfileCard from "../profile-card/profilecard";
 
 const Sidebar: React.FC = () => {
   return (
@@ -15,7 +15,8 @@ const Sidebar: React.FC = () => {
       {/*TODO actually use this when users get implemented*/}
       <div className="flex flex-col gap-6">
         <NavButton iconSrc={HouseIcon} to="/" text="Home" />
-        <NavButton iconSrc={PlantIcon} to="/clusters" text="Clusters" />
+        <NavButton iconSrc={ClusterIcon} to="/clusters" text="Clusters" />
+        <NavButton iconSrc={PlantIcon} to="/plants" text="Plants" />
         <NavButton iconSrc={LifelineIcon} to="/monitoring" text="Monitoring" />
       </div>
     </div>
