@@ -47,14 +47,14 @@ const ClusterCard: React.FC<ClusterCardProps> = ({
         <div className="grid grid-cols-2 gap-4 ">
           {humidity && (
             <div className="flex items-center gap-2">
-              <HumidityIcon className="w-5" />
-              <span>{humidity}%</span>
+              <HumidityIcon className="w-5 fill-haze-green" />
+              <span className="font-bold text-haze-green">{humidity}%</span>
             </div>
           )}
           {temperature && (
             <div className="flex items-center gap-2">
-              <ThermometerIcon className="w-5" />
-              <span>23°C</span>
+              <ThermometerIcon className="w-5 fill-haze-green" />
+              <span className="font-bold text-haze-green">{temperature}°C</span>
             </div>
           )}
           <div className="flex items-center gap-2">
