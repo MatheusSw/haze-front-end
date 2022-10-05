@@ -21,6 +21,7 @@ const Home: React.FC = () => {
     },
     {
       refetchOnWindowFocus: false,
+      refetchOnMount: true,
     }
   );
 
@@ -36,6 +37,7 @@ const Home: React.FC = () => {
           return measurement;
         },
         refetchOnWindowFocus: false,
+        refetchOnMount: true,
         retry: false,
         onSuccess(data: Measurement[]) {
           const cluster = clusterData.find(
@@ -51,7 +53,7 @@ const Home: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col rounded-3xl bg-white px-14 py-16">
+    <>
       <div className="mb-6 flex flex-col gap-10">
         <div className="flex flex-col gap-2">
           <span className="text-4xl font-bold text-gray-800">
@@ -128,7 +130,7 @@ const Home: React.FC = () => {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

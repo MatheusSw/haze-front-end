@@ -18,7 +18,9 @@ const Layout: React.FC = () => {
               photo="https://images.unsplash.com/photo-1498671546682-94a232c26d17?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=749&q=80"
             />
           </div>
-          <Outlet />
+          <div className="flex flex-col rounded-3xl bg-white px-14 py-16">
+            <Outlet />
+          </div>
         </div>
       </main>
     </div>
