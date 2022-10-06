@@ -4,25 +4,33 @@ import { ReactComponent as GoBackArrowIcon } from "../../icons/right-arrow.svg";
 import { ReactComponent as LoadingIcon } from "../../icons/refresh.svg";
 import { useMutation, useQueryClient } from "react-query";
 import PlantCreateRequest from "../../types/requests/plantCreateRequest";
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Cluster } from "../../types/responses/clusters";
 import ClusterIndexQuery from "../../queries/clustersIndexQuery";
+import PlantStages from "../../types/PlantStages";
 
 const PlantsCreatePage: React.FC = () => {
   const queryClient = useQueryClient();
 
   const {
     isLoading: clusterIsLoading,
+    isSuccess: clusterIsSuccess,
     isError: clusterIsError,
     data: clusterData,
   } = ClusterIndexQuery();
 
+  useEffect(() => {
+    if (clusterIsSuccess) {
+      setTargetCluster(clusterData[0].id);
+    }
+  }, [clusterIsSuccess, clusterData]);
+
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [targetCluster, setTargetCluster] = useState<Cluster>();
+  const [targetCluster, setTargetCluster] = useState("");
   const [plantStrain, setPlantStrain] = useState("");
-  const [plantState, setPlantState] = useState("");
+  const [plantStage, setPlantStage] = useState(PlantStages[0]);
   const [plantClonedFrom, setPlantClonedFrom] = useState("");
   const [plantBirthDate, setPlantBirthDate] = useState(1);
 
@@ -52,13 +60,60 @@ const PlantsCreatePage: React.FC = () => {
   };
 
   const handlePlantsCreateSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    plantMutation.mutate({
+    e.preventDefault();
+
+    if (!plantBirthDate || !plantStage || !plantStrain || !targetCluster) {
+      return;
+    }
+
+    const request = {
       lifetime: plantBirthDate,
-      state: plantState,
+      state: plantStage.toLowerCase(),
       strain: plantStrain,
       ...(plantClonedFrom && { cloned_from: plantClonedFrom }),
-    });
+    };
+
+    plantMutation.mutate(request);
   };
+
+  const getClusterKeyFromSelect = (target: EventTarget & HTMLSelectElement) => {
+    const selectedIndex = target.options.selectedIndex;
+    return target.options[selectedIndex].getAttribute("cluster-key");
+  };
+
+  const findClusterById = (clusterId: string) => {
+    var cluster = clusterData?.find((c) => c.id === clusterId);
+    if (!cluster) {
+      return;
+    }
+    return cluster;
+  };
+
+  function handleTargetClusterChange(e: ChangeEvent<HTMLSelectElement>): void {
+    const clusterId = getClusterKeyFromSelect(e.target);
+    if (!clusterId) {
+      return;
+    }
+    var selectedCluster = findClusterById(clusterId);
+    if (!selectedCluster) {
+      return;
+    }
+    setTargetCluster(selectedCluster.id);
+  }
+
+  function handlePlantClonedFromChange(
+    e: ChangeEvent<HTMLSelectElement>
+  ): void {
+    const clusterId = getClusterKeyFromSelect(e.target);
+    if (!clusterId) {
+      return;
+    }
+    var selectedCluster = findClusterById(clusterId);
+    if (!selectedCluster) {
+      return;
+    }
+    setPlantClonedFrom(selectedCluster.id);
+  }
 
   return (
     <>
@@ -98,10 +153,16 @@ const PlantsCreatePage: React.FC = () => {
                   <select
                     className="block w-full appearance-none rounded border border-gray-200 py-3 px-4 pr-8 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
                     id="grid-plant-target-cluster"
+                    onChange={(e) => handleTargetClusterChange(e)}
+                    onBlur={(e) => handleTargetClusterChange(e)}
                   >
                     {clusterIsLoading && <option>Loading</option>}
                     {clusterData?.map((cluster) => {
-                      return <option>{cluster.name}</option>;
+                      return (
+                        <option key={cluster.id} cluster-key={cluster.id}>
+                          {cluster.name}
+                        </option>
+                      );
                     })}
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -139,20 +200,19 @@ const PlantsCreatePage: React.FC = () => {
                   className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-700"
                   htmlFor="grid-plant-state"
                 >
-                  State
+                  Stage
                 </label>
                 <div className="relative">
                   <select
                     className="block w-full appearance-none rounded border border-gray-200 py-3 px-4 pr-8 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
                     id="grid-plant-state"
-                    value={plantState}
-                    onChange={(e) => setPlantState(e.target.value)}
+                    value={plantStage}
+                    onChange={(e) => setPlantStage(e.target.value)}
+                    onBlur={(e) => setPlantStage(e.target.value)}
                   >
-                    {/*Map this from the enum instead of hard-coding*/}
-                    <option>Germination</option>
-                    <option>Seedling</option>
-                    <option>Vegetative</option>
-                    <option>Flowering</option>
+                    {PlantStages.map((stage) => {
+                      return <option key={stage}>{stage}</option>;
+                    })}
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                     <svg
@@ -178,11 +238,17 @@ const PlantsCreatePage: React.FC = () => {
                   <select
                     className="block w-full appearance-none rounded border border-gray-200 py-3 px-4 pr-8 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
                     id="grid-plant-cloned-from"
+                    onChange={(e) => handlePlantClonedFromChange(e)}
+                    onBlur={(e) => handlePlantClonedFromChange(e)}
                   >
                     <option></option>
                     {clusterIsLoading && <option>Loading</option>}
                     {clusterData?.map((cluster) => {
-                      return <option>{cluster.name}</option>;
+                      return (
+                        <option key={cluster.id} cluster-key={cluster.id}>
+                          {cluster.name}
+                        </option>
+                      );
                     })}
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">

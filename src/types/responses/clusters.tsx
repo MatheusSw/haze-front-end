@@ -1,4 +1,3 @@
-import { PlantStage } from "../enums/PlantStage";
 import { Measurement } from "./measurement";
 
 export type Cluster = {
