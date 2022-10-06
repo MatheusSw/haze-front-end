@@ -5,7 +5,9 @@ import ClusterCard from "../../components/cluster-card/clustercard";
 import { Measurement } from "../../types/responses/measurement";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/button/button";
-import clusterIndexQuery from "../../queries/clustersIndexQuery";
+import clusterIndexQuery, {
+  ClusterIndexQuery,
+} from "../../queries/clustersIndexQuery";
 import MeasurementIndexQuery from "../../queries/measurementsIndexQuery";
 
 const ClustersPage: React.FC = () => {
@@ -21,10 +23,7 @@ const ClustersPage: React.FC = () => {
     isLoading: clusterIsLoading,
     isError: clusterIsError,
     data: clusterData,
-  } = useQuery<Cluster[]>(["clusters"], clusterIndexQuery, {
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
-  });
+  } = ClusterIndexQuery();
 
   const measurementsQueries = useQueries(
     clusterData?.map((cluster) => {

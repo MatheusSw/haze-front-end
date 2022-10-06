@@ -7,7 +7,9 @@ import { ReactComponent as AlertIcon } from "../../icons/alert.svg";
 import { ReactComponent as PlantIcon } from "../../icons/plant.svg";
 import { ReactComponent as GreenhouseIcon } from "../../icons/networking.svg";
 import { Measurement } from "../../types/responses/measurement";
-import clusterIndexQuery from "../../queries/clustersIndexQuery";
+import clusterIndexQuery, {
+  ClusterIndexQuery,
+} from "../../queries/clustersIndexQuery";
 import MeasurementIndexQuery from "../../queries/measurementsIndexQuery";
 
 const Home: React.FC = () => {
@@ -15,32 +17,29 @@ const Home: React.FC = () => {
     isLoading: clusterIsLoading,
     isError: clusterIsError,
     data: clusterData,
-  } = useQuery<Cluster[]>(["clusters"], clusterIndexQuery, {
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
-  });
+  } = ClusterIndexQuery();
 
-  //const measurementsQueries = useQueries(
-  //  clusterData?.map((cluster) => {
-  //    return {
-  //      queryKey: [`measurement-${cluster.id}`],
-  //      queryFn: MeasurementIndexQuery(cluster.id),
-  //      refetchOnWindowFocus: false,
-  //      refetchOnMount: true,
-  //      retry: false,
-  //      onSuccess(data: Measurement[]) {
-  //        const cluster = clusterData.find(
-  //          (cluster) => cluster.id === data[0].id
-  //        );
-  //        if (!cluster) {
-  //          return;
-  //        }
-  //        cluster!.measurements = data;
-  //      },
-  //      staleTime: 10000,
-  //    };
-  //  }) ?? []
-  //);
+  const measurementsQueries = useQueries(
+    clusterData?.map((cluster) => {
+      return {
+        queryKey: [`measurement-${cluster.id}`],
+        queryFn: MeasurementIndexQuery(cluster.id),
+        refetchOnWindowFocus: false,
+        refetchOnMount: true,
+        retry: false,
+        onSuccess(data: Measurement[]) {
+          const cluster = clusterData.find(
+            (cluster) => cluster.id === data[0].id
+          );
+          if (!cluster) {
+            return;
+          }
+          cluster!.measurements = data;
+        },
+        staleTime: 10000,
+      };
+    }) ?? []
+  );
 
   return (
     <>
