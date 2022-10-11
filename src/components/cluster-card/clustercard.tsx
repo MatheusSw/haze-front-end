@@ -3,6 +3,7 @@ import { ReactComponent as WaterDropsIcon } from "../../icons/water-drops.svg";
 import { ReactComponent as PlantIcon } from "../../icons/plant.svg";
 import { ReactComponent as HumidityIcon } from "../../icons/humidity.svg";
 import { ReactComponent as ThermometerIcon } from "../../icons/thermometer.svg";
+import format from "date-fns/format";
 
 interface ClusterCardProps {
   clusterId: string;
@@ -12,6 +13,7 @@ interface ClusterCardProps {
   clusterPlantsCount: number;
   temperature?: string;
   humidity?: string;
+  measurementLastUpdated?: string;
 }
 
 const ClusterCard: React.FC<ClusterCardProps> = ({
@@ -22,10 +24,11 @@ const ClusterCard: React.FC<ClusterCardProps> = ({
   clusterStage,
   humidity,
   temperature,
+  measurementLastUpdated,
 }) => {
   return (
     <div
-      className={`flex w-52 flex-grow-0 flex-col justify-between gap-16 rounded-2xl border px-6 py-6`}
+      className={`flex w-60 flex-grow-0 flex-col justify-between gap-16 rounded-2xl border px-6 py-6`}
     >
       <div className="flex flex-col break-words">
         <span className="text-sm font-medium text-gray-300">#{clusterId}</span>
@@ -39,6 +42,11 @@ const ClusterCard: React.FC<ClusterCardProps> = ({
         )}
       </div>
       <div className="flex flex-col gap-y-4">
+        {measurementLastUpdated && (
+          <div className="rounded-lg bg-gray-100 p-2 text-sm font-medium">
+            {format(new Date(), "dd/MM/yyyy kk:mm:ss")}
+          </div>
+        )}
         {(!humidity || !temperature) && (
           <div className="col-span-2 rounded-xl bg-red-500 p-2 text-xs text-white">
             No measurements found
@@ -46,7 +54,7 @@ const ClusterCard: React.FC<ClusterCardProps> = ({
         )}
         <div className="grid grid-cols-2 gap-4 ">
           {humidity && (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-shrink-0 flex-grow-0 items-center gap-2">
               <HumidityIcon className="w-5 fill-haze-green" />
               <span className="font-medium text-haze-green">{humidity}%</span>
             </div>
