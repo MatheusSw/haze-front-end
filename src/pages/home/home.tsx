@@ -27,7 +27,7 @@ const Home: React.FC = () => {
         refetchOnWindowFocus: false,
         refetchOnMount: true,
         retry: false,
-        refetchInterval: 60000,
+        refetchInterval: 120000,
         onSuccess(data: Measurement[]) {
           const cluster = clusterData.find(
             (cluster) => cluster.id === data[0].id
