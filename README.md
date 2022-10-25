@@ -1,3 +1,8 @@
+## Screenshots
+![Home page](https://i.imgur.com/u5L0TFs.png)
+![New cluster page](https://i.imgur.com/wXJnRFG.png)
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
